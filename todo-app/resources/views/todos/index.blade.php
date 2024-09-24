@@ -184,39 +184,38 @@
 
     <script>
         function openDialog(todoId) {
-    document.getElementById('editDialog').style.display = 'block';
-    document.getElementById('edit-todo').value = document.querySelector(`label[for="${todoId}"]`).textContent;
-    document.getElementById('edit-todo-id').value = todoId;  // Store the todoId in the hidden input
-}
-
+            document.getElementById('editDialog').style.display = 'block';
+            document.getElementById('edit-todo').value = document.querySelector(`label[for="${todoId}"]`).textContent;
+            document.getElementById('edit-todo-id').value = todoId;  // Store the todoId in the hidden input
+        }
 
         function closeDialog() {
             document.getElementById('editDialog').style.display = 'none';
         }
 
         function editTodo() {
-    var title = document.getElementById('edit-todo').value;
-    var todoId = document.getElementById('edit-todo-id').value;  // Get the todoId
+            var title = document.getElementById('edit-todo').value;
+            var todoId = document.getElementById('edit-todo-id').value;  // Get the todoId
 
-    // Now you can make your AJAX request to update the todo
-    $.ajax({
-        url: `/todos/${todoId}`,  // URL to update the Todo
-        type: 'PUT',  // Use PUT method to update data
-        data: {
-            title: title,
-            _token: '{{ csrf_token() }}'  // Include the CSRF token for security
-        },
-        success: function(response) {
-            // Handle success, e.g., refresh the todo list or notify the user
-            console.log('Todo updated successfully!');
-            closeDialog();  // Close the dialog after saving
-        },
-        error: function(xhr) {
-            // Handle errors
-            console.error('Error updating todo:', xhr.responseText);
+            // Now you can make your AJAX request to update the todo
+            $.ajax({
+                url: `/todos/${todoId}`,  // URL to update the Todo
+                type: 'PUT',  // Use PUT method to update data
+                data: {
+                    title: title,
+                    _token: '{{ csrf_token() }}'  // Include the CSRF token for security
+                },
+                success: function(response) {
+                    // Handle success, e.g., refresh the todo list or notify the user
+                    console.log('Todo updated successfully!');
+                    closeDialog();  // Close the dialog after saving
+                },
+                error: function(xhr) {
+                    // Handle errors
+                    console.error('Error updating todo:', xhr.responseText);
+                }
+            });
         }
-    });
-}
 
 
 
@@ -282,16 +281,17 @@
                 data: {
                     _token: '{{ csrf_token() }}'
                 },
-                // success: function(response) {
-                //     if (response.success) {
-                //         alert('Todo deleted successfully!');
-                //         // Remove the todo item from the DOM
-                //         $(`#todo-${todoId}`).closest('.todo-item').remove();
-                //     }
-                // },
-                // error: function(xhr, status, error) {
-                //     alert('An error occurred: ' + error);
-                // }
+                success: function(response) {
+                    if (response.success) {
+                        alert('Todo deleted successfully!');
+                        // Remove the todo item from the DOM
+                        $(`#todo-${todoId}`).closest('.todo-item').remove();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText); // Log the full response
+                    alert('An error occurred: ' + error);
+                }
             });
         }
     }

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\TodoRepositoryInterface;
+use App\Models\Todo;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Repositories\TodoRepositoryInterface;
 
 class TodoController extends Controller
 {
@@ -43,21 +45,39 @@ class TodoController extends Controller
 
     }
 
-    public function update(Request $request, $id)
-    {
-        $data = $request->validate([
-            'title' => 'required|string|max:255',
-        ]);
+// policies
+public function update(Request $request, $id)
+{
+    $todoId = $id;
+    $numericId = Str::replace('todo-', '', $todoId);
 
-        $this->todoRepository->update($id, $data);
-        return redirect()->back()->with('success', 'Todo updated!');
-    }
+    $todo = Todo::findOrFail($numericId);
 
-    public function destroy($id)
-    {
-        $this->todoRepository->delete($id);
-        return redirect()->back()->with('success', 'Todo deleted!');
-    }
+    // Authorize the action using the policy
+    $this->authorize('update', $todo);
+
+    $request->validate([
+        'title' => 'required|string|max:255',
+    ]);
+
+    $todo->title = $request->title;
+    $todo->save();
+
+    return response()->json(['success' => true]);
+}
+
+public function destroy($id)
+{
+    $todo = Todo::findOrFail($id);
+
+    // Authorize the action using the policy
+    $this->authorize('delete', $todo);
+
+    $todo->delete();
+
+    return response()->json(['success' => true]);
+}
+
 
     public function updateStatus(Request $request, $id)
     {
