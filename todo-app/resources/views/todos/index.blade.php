@@ -286,6 +286,7 @@
                 },
                 success: function(response) {
                     if (response.success) {
+                        location.reload();
                         alert('Todo deleted successfully!');
                         // Remove the todo item from the DOM
                         $(`#todo-${todoId}`).closest('.todo-item').remove();
