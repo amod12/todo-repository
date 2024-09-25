@@ -79,11 +79,16 @@
 <body>
     <div class="container">
         <h1>Login to Todo App</h1>
-        @if ($errors->any())
-            <div>
-                <strong>{{ $errors->first() }}</strong>
-            </div>
-        @endif
+        @if (session('error'))
+                <div class="alert alert-danger" style="color: white; background-color: red; padding: 10px; border-radius: 5px;">
+                    {{ session('error') }}
+                </div>
+            @endif          
+            @if (session('success'))
+                <div class="alert alert-success" style="color: white; background-color: green; padding: 10px; border-radius: 5px;">
+                    {{ session('success') }}
+                </div>
+            @endif  
         
         <form action="{{ route('login') }}" method="POST">
             @csrf
@@ -97,7 +102,7 @@
         </form>
         <div class="links">
             <a href="/register">Register</a>
-            <a href="/password-change">Forgot Password?</a>
+            <a href="/password-change-1">Forgot Password?</a>
         </div>
     </div>
 </body>

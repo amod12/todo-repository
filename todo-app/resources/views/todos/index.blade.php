@@ -209,6 +209,7 @@
                     _token: '{{ csrf_token() }}'  // Include the CSRF token for security
                 },
                 success: function(response) {
+                    location.reload();
                     // Handle success, e.g., refresh the todo list or notify the user
                     console.log('Todo updated successfully!');
                     closeDialog();  // Close the dialog after saving
@@ -219,9 +220,6 @@
                 }
             });
         }
-
-
-
     </script>
 </body>
 </html>
@@ -246,7 +244,8 @@
                     user_id:user_id,
                     _token: '{{ csrf_token() }}'  
                 },
-                success: function(response) {                    
+                success: function(response) {   
+                    location.reload();
                     alert('Todo added: sucessfully');
                     $('#todo-title').val('');
                 },

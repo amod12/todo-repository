@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forgot Password - Todo App</title>
     <style>
-        /* Existing CSS styles remain unchanged */
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f2f5;
@@ -58,21 +58,9 @@
             font-size: 1rem;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            opacity: 0.5; /* Initially disabled */
-            pointer-events: none; /* Prevent click */
-        }
-        button.enabled {
-            opacity: 1; /* Fully visible when enabled */
-            pointer-events: auto; /* Allow click */
         }
         button:hover {
             background-color: #45a049;
-        }
-        .error-message {
-            color: red;
-            font-size: 0.9rem;
-            margin-top: -0.5rem;
-            margin-bottom: 1rem;
         }
         .login-link {
             text-align: center;
@@ -86,31 +74,14 @@
             text-decoration: underline;
         }
     </style>
-    <script>
-        function checkPasswordMatch() {
-            const newPassword = document.getElementById('new-password').value;
-            const confirmPassword = document.getElementById('confirm-password').value;
-            const submitButton = document.querySelector('button[type="submit"]');
-            const errorMessage = document.getElementById('error-message');
-
-            if (newPassword === confirmPassword && newPassword.length > 0) {
-                submitButton.classList.add('enabled');
-                errorMessage.textContent = ''; // Clear any previous error messages
-            } else {
-                submitButton.classList.remove('enabled');
-                errorMessage.textContent = 'Passwords do not match.'; // Set error message
-            }
-        }
-    </script>
 </head>
 <body>
     <div class="container">
         <h1>Reset Password</h1>
-        <h3>Code has been sent to your email pls check</h3>
-        <form action="{{ route('password.change') }}" method="POST">
+        <form action="{{ route('password.change.1') }}" method="POST">
             @csrf
-            <label for="email">Code</label>
-            <input type="number" id="code" name="code" required autocomplete="code">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required autocomplete="email"> 
             @if (session('error'))
                 <div class="alert alert-danger" style="color: white; background-color: red; padding: 10px; border-radius: 5px;">
                     {{ session('error') }}
@@ -120,16 +91,9 @@
                 <div class="alert alert-success" style="color: white; background-color: green; padding: 10px; border-radius: 5px;">
                     {{ session('success') }}
                 </div>
-            @endif           
-            <label for="new-password">New Password</label>
-            <input type="password" id="new-password" name="new-password" required autocomplete="new-password" oninput="checkPasswordMatch()">
-            
-            <label for="confirm-password">Confirm New Password</label>
-            <input type="password" id="confirm-password" name="confirm-password" required autocomplete="new-password" oninput="checkPasswordMatch()">
-            
-            <div class="error-message" id="error-message"></div> <!-- Error message container -->
-            
-            <button type="submit">Reset Password</button>
+            @endif
+
+            <button type="submit">Send Email</button>
         </form>
         <div class="login-link">
             Remember your password? <a href="/login">Login here</a>
