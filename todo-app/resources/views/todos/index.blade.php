@@ -266,6 +266,7 @@
             },
             success: function(response) {
                 if (response.success) {
+                    location.reload();
                     alert('Status updated successfully.');
                 }
             },
