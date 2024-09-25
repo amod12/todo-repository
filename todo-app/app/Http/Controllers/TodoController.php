@@ -19,7 +19,9 @@ class TodoController extends Controller
     public function index()
     {
         $todos = $this->todoRepository->getAll();
-        return view('todos.index', compact('todos'));
+        $completedCount = $todos->where('status', 1)->count();
+        $totalCount = $todos->count();
+        return view('todos.index', compact('todos', 'completedCount', 'totalCount'));
     }
 
     public function store(Request $request)

@@ -8,7 +8,7 @@ class TodoRepository implements TodoRepositoryInterface
 {
     public function getAll()
     {
-        return Todo::where('user_id', auth()->id())->get();
+        return Todo::where('user_id', auth()->id())->orderBy('created_at', 'asc')->get();
     }
 
     public function getById($id)

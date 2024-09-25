@@ -30,3 +30,7 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('password-change', [AuthController::class, 'showchangePasswordForm'])->name('password.change');
+Route::post('password-change', [AuthController::class, 'changePassword'])->name('password.change');
+

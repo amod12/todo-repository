@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+
 
 class AuthController extends Controller
 {
@@ -17,6 +19,10 @@ class AuthController extends Controller
     public function showRegisterForm()
     {
         return view('auth.register'); // Create this view
+    }
+    public function showchangePasswordForm()
+    {
+        return view('auth.forgotPassword'); // Create this view
     }
 
     public function register(Request $request)
@@ -49,5 +55,20 @@ class AuthController extends Controller
     {
         Auth::logout();
         return redirect('/login'); // Redirect to login after logout
+    }
+
+    public function changePassword(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+
+        if(!isset($user)){
+            Session::flash('error', 'No such email exists.');
+            return redirect()->back();
+        }
+        $all = $request->all();
+        $user->password = Hash::make($all["new-password"]);
+        $user->save();
+        Session::flash('success', 'Password Changed.');
+        return redirect()->back();
     }
 }

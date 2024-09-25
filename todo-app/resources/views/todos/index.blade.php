@@ -133,7 +133,9 @@
     <div class="card">
         <div class="card-header">
             <h1 class="card-title">Your Todo List</h1>
-
+            <button class="btn btn-destructive" id="logout-button" style="float: right; margin-top: -30px;">
+                <i class="fas fa-sign-out-alt icon"></i> Logout
+            </button>
         </div>
         <div class="card-content">
             <div class="input-group">
@@ -167,8 +169,9 @@
             </ul>
         </div>
         <div class="card-footer">
-            <p class="text-sm text-gray-500">1 of 3 tasks completed</p>
+            <p class="text-sm text-gray-500">{{ $completedCount }} of {{ $totalCount }} tasks completed</p>
         </div>
+        
     </div>
     <div id="editDialog" class="dialog">
         <div class="dialog-content">
@@ -295,5 +298,26 @@
             });
         }
     }
+
+    $(document).ready(function() {
+        $('#logout-button').click(function() {
+            if (confirm('Are you sure you want to logout?')) {
+                $.ajax({
+                    url: '/logout',
+                    type: 'GET',
+                    data: {
+                        _token: '{{ csrf_token() }}'  // Include CSRF token
+                    },
+                    success: function(response) {
+                        // Redirect to the login page or home page after successful logout
+                        window.location.href = '/login';  // Update the URL as needed
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error: ' + xhr.responseText);
+                    }
+                });
+            }
+        });
+    });
 
 </script>
